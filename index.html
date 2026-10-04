@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>Anatomy Flashcards</title>
+<style>
+:root {
+  --bg:#eef2f7;
+  --panel:#ffffff;
+  --text:#172033;
+  --muted:#64748b;
+  --line:#d7dee8;
+  --blue:#2563eb;
+  --blue-dark:#1e40af;
+  --blue-soft:#eaf2ff;
+  --shadow:0 12px 30px rgba(15,23,42,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(37,99,235,.13), transparent 32rem),
+    var(--bg);
+  color:var(--text);
+}
+.container{max-width:1120px;margin:0 auto;padding:22px 16px 44px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#0f172a,#172554 72%,#1d4ed8);
+  color:white;
+  border-radius:26px;
+  padding:34px clamp(20px,5vw,50px);
+  box-shadow:0 18px 45px rgba(15,23,42,.22);
+  margin-bottom:22px;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  width:230px;height:230px;
+  border-radius:50%;
+  right:-70px;top:-90px;
+  background:rgba(255,255,255,.08);
+}
+.eyebrow{font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#bfdbfe;margin-bottom:8px}
+.hero h1{font-size:clamp(2rem,7vw,4rem);line-height:1;margin:0 0 12px;letter-spacing:-.035em}
+.hero p{max-width:700px;margin:0;color:#dbeafe;font-size:clamp(1rem,2.4vw,1.15rem);line-height:1.55}
+.hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.stat{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:8px 13px;font-weight:750;font-size:.9rem;backdrop-filter:blur(5px)}
+
+.tools{display:flex;gap:10px;align-items:center;margin:18px 0 22px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:240px}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:19px;height:19px;color:#64748b}
+#search{
+  width:100%;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:14px;
+  padding:13px 14px 13px 42px;
+  font:inherit;
+  font-size:1rem;
+  outline:none;
+  box-shadow:0 4px 14px rgba(15,23,42,.05);
+}
+#search:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.clear-btn{border:1px solid var(--line);background:white;color:var(--text);border-radius:12px;padding:12px 15px;font-weight:750;cursor:pointer}
+.clear-btn:hover{background:#f8fafc}
+
+.section{margin-top:28px}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:0 2px 12px}
+.section-heading h2{margin:0;font-size:clamp(1.25rem,3vw,1.65rem);letter-spacing:-.02em}
+.section-heading p{margin:4px 0 0;color:var(--muted)}
+.deck-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.deck-card{
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  flex-direction:column;
+  min-height:210px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:17px;
+  box-shadow:var(--shadow);
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+}
+.deck-card:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(15,23,42,.13);border-color:#a8c4ff}
+.deck-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.icon{width:46px;height:46px;border-radius:13px;background:var(--blue-soft);display:grid;place-items:center;font-size:1.45rem}
+.count{font-size:.8rem;font-weight:800;color:var(--blue-dark);background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:6px 9px}
+.deck-card h3{font-size:1.16rem;margin:17px 0 7px;letter-spacing:-.015em}
+.deck-card p{color:var(--muted);line-height:1.45;margin:0 0 18px;font-size:.93rem}
+.study-row{margin-top:auto;display:flex;align-items:center;justify-content:space-between;color:var(--blue);font-weight:800;font-size:.92rem}
+.arrow{font-size:1.25rem}
+.empty{display:none;background:white;border:1px dashed #94a3b8;border-radius:16px;padding:28px;text-align:center;color:var(--muted);margin-top:20px}
+.footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:36px}
+.hidden{display:none!important}
+
+@media(max-width:850px){.deck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+  .container{padding:10px 8px 28px}
+  .hero{border-radius:19px;padding:25px 19px}
+  .deck-grid{grid-template-columns:1fr}
+  .deck-card{min-height:180px}
+  .section{margin-top:23px}
+  .tools{margin-top:14px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="hero">
+    <div class="eyebrow">Anatomy Study Library</div>
+    <h1>Anatomy Flashcards</h1>
+    <p>Choose a section below to practice image identification. Your score, missed cards, and edited answers remain saved separately inside each deck on this browser.</p>
+    <div class="hero-stats">
+      <div class="stat">13 study decks</div>
+      <div class="stat">290 flashcards</div>
+      <div class="stat">Phone & desktop friendly</div>
+    </div>
+  </header>
+
+  <div class="tools">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input id="search" type="search" placeholder="Search a deck, bone, muscle or region…" aria-label="Search anatomy decks">
+    </div>
+    <button class="clear-btn" id="clearSearch" type="button">Clear</button>
+  </div>
+
+  
+    <section class="section" data-category="axial skeleton">
+      <div class="section-heading">
+        <div>
+          <h2>Axial Skeleton</h2>
+          <p>Skull, vertebral column and thoracic cage</p>
+        </div>
+      </div>
+      <div class="deck-grid">
+    
+        <a class="deck-card" href="skull-mandible.html" data-title="skull & mandible skull and mandibular landmarks">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🦴</div>
+            <div class="count">21 cards</div>
+          </div>
+          <h3>Skull & Mandible</h3>
+          <p>Skull and mandibular landmarks</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="skull-parts.html" data-title="skull parts cranial bones, foramina, processes, sutures">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">💀</div>
+            <div class="count">32 cards</div>
+          </div>
+          <h3>Skull Parts</h3>
+          <p>Cranial bones, foramina, processes, sutures</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="cervical-lumbar-vertebrae-fixed.html" data-title="cervical & lumbar vertebrae atlas, axis, cervical and lumbar landmarks">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🧍</div>
+            <div class="count">34 cards</div>
+          </div>
+          <h3>Cervical & Lumbar Vertebrae</h3>
+          <p>Atlas, axis, cervical and lumbar landmarks</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="thoracic-vertebra-working-edit.html" data-title="thoracic vertebrae thoracic vertebral landmarks">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🦴</div>
+            <div class="count">22 cards</div>
+          </div>
+          <h3>Thoracic Vertebrae</h3>
+          <p>Thoracic vertebral landmarks</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="thoracic-cage.html" data-title="thoracic cage sternum, ribs and costal cartilage">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🫁</div>
+            <div class="count">8 cards</div>
+          </div>
+          <h3>Thoracic Cage</h3>
+          <p>Sternum, ribs and costal cartilage</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        </div></section>
+    <section class="section" data-category="appendicular skeleton">
+      <div class="section-heading">
+        <div>
+          <h2>Appendicular Skeleton</h2>
+          <p>Girdles and upper/lower limbs</p>
+        </div>
+      </div>
+      <div class="deck-grid">
+    
+        <a class="deck-card" href="pectoral-girdle.html" data-title="pectoral girdle clavicle and scapular landmarks">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🦴</div>
+            <div class="count">15 cards</div>
+          </div>
+          <h3>Pectoral Girdle</h3>
+          <p>Clavicle and scapular landmarks</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="hemerus.html" data-title="humerus humerus landmarks and features">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">💪</div>
+            <div class="count">20 cards</div>
+          </div>
+          <h3>Humerus</h3>
+          <p>Humerus landmarks and features</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="ulna-radius-carpals.html" data-title="ulna, radius & carpals forearm and hand bones">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">✋</div>
+            <div class="count">23 cards</div>
+          </div>
+          <h3>Ulna, Radius & Carpals</h3>
+          <p>Forearm and hand bones</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="pelvic-girdle.html" data-title="pelvic girdle coxal bone and pelvic landmarks">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🦴</div>
+            <div class="count">18 cards</div>
+          </div>
+          <h3>Pelvic Girdle</h3>
+          <p>Coxal bone and pelvic landmarks</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="lower-limb.html" data-title="lower limb femur, patella, tibia, fibula and foot">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🦵</div>
+            <div class="count">29 cards</div>
+          </div>
+          <h3>Lower Limb</h3>
+          <p>Femur, patella, tibia, fibula and foot</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="knee-ligaments.html" data-title="knee ligaments & menisci knee ligaments, tendons and menisci">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🦵</div>
+            <div class="count">8 cards</div>
+          </div>
+          <h3>Knee Ligaments & Menisci</h3>
+          <p>Knee ligaments, tendons and menisci</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        </div></section>
+    <section class="section" data-category="muscles">
+      <div class="section-heading">
+        <div>
+          <h2>Muscular System</h2>
+          <p>Major upper- and lower-body muscles</p>
+        </div>
+      </div>
+      <div class="deck-grid">
+    
+        <a class="deck-card" href="upper-body-muscles-corrected.html" data-title="upper body muscles head, neck, trunk, shoulder and arm">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">💪</div>
+            <div class="count">30 cards</div>
+          </div>
+          <h3>Upper Body Muscles</h3>
+          <p>Head, neck, trunk, shoulder and arm</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        
+        <a class="deck-card" href="lower-body-muscles-corrected.html" data-title="lower body muscles gluteal, thigh, leg and lower-limb muscles">
+          <div class="deck-top">
+            <div class="icon" aria-hidden="true">🏃</div>
+            <div class="count">30 cards</div>
+          </div>
+          <h3>Lower Body Muscles</h3>
+          <p>Gluteal, thigh, leg and lower-limb muscles</p>
+          <div class="study-row">
+            <span>Open deck</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        </div></section>
+
+  <div id="empty" class="empty">No decks match that search.</div>
+
+  <div class="footer">All decks open from this page and work independently.</div>
+</div>
+
+<script>
+const input=document.getElementById("search");
+const clear=document.getElementById("clearSearch");
+const cards=[...document.querySelectorAll(".deck-card")];
+const sections=[...document.querySelectorAll(".section")];
+const empty=document.getElementById("empty");
+
+function filterDecks(){
+  const q=input.value.trim().toLowerCase();
+  let visibleCount=0;
+  cards.forEach(card=>{
+    const hay=(card.dataset.title+" "+card.textContent).toLowerCase();
+    const show=!q||hay.includes(q);
+    card.classList.toggle("hidden",!show);
+    if(show) visibleCount++;
+  });
+  sections.forEach(section=>{
+    const any=[...section.querySelectorAll(".deck-card")].some(c=>!c.classList.contains("hidden"));
+    section.classList.toggle("hidden",!any);
+  });
+  empty.style.display=visibleCount ? "none" : "block";
+}
+input.addEventListener("input",filterDecks);
+clear.addEventListener("click",()=>{input.value="";filterDecks();input.focus();});
+</script>
+</body>
+</html>
